@@ -520,11 +520,8 @@ GameObject:
   - component: {fileID: 1954089010}
   - component: {fileID: 1954089011}
   - component: {fileID: 1954089013}
-  - component: {fileID: 1954089012}
-  - component: {fileID: 1954089014}
   - component: {fileID: 1954089016}
   - component: {fileID: 1954089018}
-  - component: {fileID: 1954089017}
   - component: {fileID: 1954089019}
   m_Layer: 0
   m_Name: Warrior_Sheet-Effect_0
@@ -623,26 +620,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1954089012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954089008}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 036976d0efed9cb42abc5333034b0ea9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OC: {fileID: 1954089008}
-  enemy: {fileID: 1239203336}
-  canAttack: 1
-  attackCooldown: 1
-  attackSound: {fileID: 0}
-  isAttacking: 0
-  Moving: {fileID: 1954089013}
-  attackRange: 2
 --- !u!114 &1954089013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,29 +633,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  jumpForce: 5
   attackRange: 0
-  grounded: 0
-  canMove: 1
-  OC: {fileID: 1954089008}
-  enemy: {fileID: 1239203336}
   canAttack: 1
   isAttacking: 0
+  isGrounded: 1
+  jumpAmount: 0
+  OC: {fileID: 1954089008}
   attackCooldown: 1
   attackSound: {fileID: 0}
---- !u!114 &1954089014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954089008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c502c960e6a3f4f8e0adb7347d11e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!50 &1954089016
 Rigidbody2D:
   serializedVersion: 4
@@ -706,62 +668,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!68 &1954089017
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954089008}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.17492068, y: -0.05852191}
-  - {x: -0.179027, y: -0.12482518}
-  - {x: -0.14030941, y: -0.14294343}
-  - {x: -0.14721084, y: -0.22080007}
-  - {x: -0.10406657, y: -0.21476804}
-  - {x: -0.093044996, y: -0.18391451}
-  - {x: -0.05532088, y: -0.22126383}
-  - {x: -0.010211915, y: -0.21617322}
-  - {x: -0.0068948744, y: -0.10779747}
-  - {x: 0.031113256, y: -0.09692693}
-  - {x: 0.009167518, y: 0.012801673}
-  - {x: 0.03014848, y: 0.054116633}
-  - {x: 0.004368064, y: 0.10665928}
-  - {x: -0.07619707, y: 0.14087802}
-  - {x: -0.1349147, y: 0.109885946}
-  - {x: -0.15343714, y: 0.012867965}
-  - {x: -0.1762107, y: -0.058521956}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!1839735485 &1954089018
 Tilemap:
   m_ObjectHideFlags: 0

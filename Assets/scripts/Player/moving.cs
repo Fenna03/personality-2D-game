@@ -5,101 +5,99 @@ using UnityEngine;
 public class moving : MonoBehaviour
 {
     public float speed = 3f;
-    public float jumpForce = 5f;
     public float attackRange = 2f;
-
-    public bool grounded;
-    public bool canMove = true;
-
-    Rigidbody2D rb;
-    private Animator anim;
-    public GameObject OC;
-    public GameObject enemy;
+    private float horizontal;
+    private float jumpingPower = 6f;
 
     public bool canAttack = true;
     public bool isAttacking = false;
+    private bool isFacingRight = true;
+    public bool isGrounded = true;
+
+    public int jumpAmount = 0;
+
+    Rigidbody2D rb;
+    private Animator animator;
+    public GameObject OC;
 
     public float attackCooldown = 1.0f;
     public AudioClip attackSound;
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        animator.SetBool("isWalking", false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Moving();
 
         if (Input.GetButton("Fire1") && canAttack)
         {
             SignAttack();
         }
-    }
 
-    public void Moving()
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && jumpAmount < 1)
+        {
+            animator.SetBool("isWalking", false);
+            jumpAmount++;
+            animator.SetBool("isJumping", true);
+            if (jumpAmount >= 1)
+            {
+                animator.SetBool("isSecondJumping", true);
+            }
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+        Flip();
+        if (Input.GetKey("d") || Input.GetKey("a"))
+        {
+            if (isGrounded == true)
+            {
+                animator.SetBool("isWalking", true);
+            }
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+    private void Flip()
     {
-        if (canMove)
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
-            canMove = true;
-            if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
-            {
-                if (grounded == true)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                    //anim.SetBool("Jumping", true);
-                }
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Translate(Vector2.left * speed * Time.deltaTime);
-                //anim.Play("Run");
-                anim.SetBool("IsMoving", true);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.Translate(Vector2.right * speed * Time.deltaTime);
-                //anim.Play("Run");
-                anim.SetBool("IsMoving", true);
-            }
-            if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-            {
-                anim.SetBool("IsMoving", false);
-            }
-
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                //transform.Translate(Vector2.down * speed * Time.deltaTime);
-                anim.Play("Crouch");
-            }
-        }
-        else 
-        {
-            canMove = false;
-            anim.SetBool("IsMoving", false);
-            
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
         }
     }
-
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        if (collision.gameObject.tag == ("ground"))
+        if (collision.collider.tag == "ground")
         {
-            grounded = true;
-        }
-    }
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == ("ground"))
-        {
-            grounded = false;
+            jumpAmount = 0;
+            isGrounded = true;
+            animator.SetBool("isSecondJumping", false);
+            animator.SetBool("isJumping", false);
         }
     }
 
-    public void SignAttack()
+    void OnCollisionExit2D(UnityEngine.Collision2D collision)
+    {
+        if (collision.collider.tag == "ground")
+        {
+            isGrounded = false;
+        }
+    }
+public void SignAttack()
     {
         isAttacking = true;
         canAttack = false;
