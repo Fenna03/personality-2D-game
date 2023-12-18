@@ -36,7 +36,6 @@ public class moving : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetButton("Fire1") && canAttack)
         {
             SignAttack();
@@ -46,16 +45,20 @@ public class moving : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && jumpAmount < 1)
         {
-            animator.SetBool("isWalking", false);
+            isGrounded = false;
             jumpAmount++;
             animator.SetBool("isJumping", true);
+            animator.SetBool("isWalking", false);
             if (jumpAmount >= 1)
             {
+                animator.SetBool("isWalking", false);
                 animator.SetBool("isSecondJumping", true);
             }
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
+
         Flip();
+
         if (Input.GetKey("d") || Input.GetKey("a"))
         {
             if (isGrounded == true)
@@ -68,6 +71,11 @@ public class moving : MonoBehaviour
             animator.SetBool("isWalking", false);
         }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            animator.Play("Crouch");
+        }
     }
     private void Flip()
     {
