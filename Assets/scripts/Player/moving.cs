@@ -22,8 +22,7 @@ public class moving : MonoBehaviour
 
     public float attackCooldown = 1.0f;
     public AudioClip attackSound;
-
-
+    public new BoxCollider2D collider;
 
 
     // Start is called before the first frame update
@@ -32,6 +31,7 @@ public class moving : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetBool("isWalking", false);
+        GetComponent<BoxCollider2D>().size = new Vector2(0.1925637f, 0.3401231f);
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class moving : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && jumpAmount < 1)
+        if (Input.GetButtonDown("Jump") && jumpAmount < 1 && !Input.GetKey(KeyCode.LeftShift))
         {
             isGrounded = false;
             jumpAmount++;
@@ -72,9 +72,18 @@ public class moving : MonoBehaviour
         }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            animator.Play("Crouch");
+            animator.SetBool("isCrouching", true);
+            GetComponent<BoxCollider2D>().size = new Vector2(0.1925637f, 0.2380938f);
+            collider.offset = new Vector2(-0.07315239f, -0.09058263f);
+        }
+        else
+        {
+            GetComponent<BoxCollider2D>().size = new Vector2(0.1925637f, 0.3401231f);
+            animator.SetBool("isCrouching", false);
+            collider.offset = new Vector2(-0.07315239f, -0.04058263f);
+
         }
     }
     private void Flip()
