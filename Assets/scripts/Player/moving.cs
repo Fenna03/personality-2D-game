@@ -6,10 +6,15 @@ using UnityEngine.EventSystems;
 public class moving : MonoBehaviour
 {
     //dashing
-    [SerializeField] float startDashTime = 1f;
+    [SerializeField] float startDashTime = 0.8f;
     [SerializeField] float dashSpeed = 6f;
     public bool canDash = true;
     float currentDashTime;
+
+    [SerializeField] float startSlideTime = 0.8f;
+    [SerializeField] float slideSpeed = 6f;
+    public bool canSlide = true;
+    float currentSlideTime;
 
     //speed
     public float speed = 3f;
@@ -64,6 +69,18 @@ public class moving : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))
             {
                 StartCoroutine(Dash(Vector2.right));
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.C) && canSlide)
+        {
+           if (Input.GetKey(KeyCode.A))
+            {
+                StartCoroutine(Slide(Vector2.left));
+            }
+           else if (Input.GetKey(KeyCode.D))
+            {
+                StartCoroutine(Slide(Vector2.right));
             }
         }
 
@@ -204,5 +221,29 @@ public class moving : MonoBehaviour
 
         canDash = true;
         animator.SetBool("Dash", false);
+    }
+
+    IEnumerator Slide(Vector2 direction)
+    {
+        canSlide = false;
+        animator.SetBool("isSliding", true);
+
+        currentSlideTime = startSlideTime; // Reset the slide timer.
+
+        while (currentSlideTime > 0f)
+        {
+
+            currentSlideTime -= Time.deltaTime; // Lower the slide timer each frame.
+
+            rb.velocity = direction * slideSpeed; // Dash in the direction that was held down.
+                                                 // No need to multiply by Time.DeltaTime here, physics are already consistent across different FPS.
+
+            yield return null; // Returns out of the coroutine this frame so we don't hit an infinite loop.
+        }
+
+        rb.velocity = new Vector2(0f, 0f); // Stop sliding.
+
+        canSlide = true;
+        animator.SetBool("isSliding", false);
     }
 }
