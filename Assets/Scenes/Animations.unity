@@ -1635,6 +1635,7 @@ MonoBehaviour:
   slideSpeed: 6
   canSlide: 1
   speed: 3
+  jumpingPower: 7
   isGrounded: 1
   jumpAmount: 0
   canAttack: 1

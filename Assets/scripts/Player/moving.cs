@@ -21,7 +21,7 @@ public class moving : MonoBehaviour
 
     //jumping
     private float horizontal;
-    private float jumpingPower = 6f; 
+    public float jumpingPower = 7f; 
     public bool isGrounded = true;
     public int jumpAmount = 0;
 
@@ -113,6 +113,7 @@ public class moving : MonoBehaviour
         if (Input.GetButtonDown("Jump") && jumpAmount < 1 && !Input.GetKey(KeyCode.LeftShift))
         {
             isGrounded = false;
+            canAttack = false;
             jumpAmount++;
             animator.SetBool("isJumping", true);
             animator.SetBool("isWalking", false);
@@ -176,6 +177,7 @@ public class moving : MonoBehaviour
         {
             jumpAmount = 0;
             isGrounded = true;
+            canAttack = true;
             animator.SetBool("isSecondJumping", false);
             animator.SetBool("isJumping", false);
         }
@@ -185,6 +187,7 @@ public class moving : MonoBehaviour
         if (collision.collider.tag == "ground")
         {
             isGrounded = false;
+            canAttack = false;
         }
     }
 
