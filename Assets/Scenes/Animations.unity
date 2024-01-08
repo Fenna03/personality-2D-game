@@ -1628,13 +1628,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20ff611caf03bd449bec82d6cfa9351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDashTime: 0.8
+  startDashTime: 1
   dashSpeed: 6
   canDash: 1
   startSlideTime: 0.8
   slideSpeed: 6
   canSlide: 1
-  speed: 3
+  speed: 4
   jumpingPower: 7
   isGrounded: 1
   jumpAmount: 0

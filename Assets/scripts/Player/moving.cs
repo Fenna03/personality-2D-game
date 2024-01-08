@@ -9,11 +9,13 @@ public class moving : MonoBehaviour
     [SerializeField] float startDashTime = 0.8f;
     [SerializeField] float dashSpeed = 6f;
     public bool canDash = true;
+    bool isDashing = false;
     float currentDashTime;
 
     [SerializeField] float startSlideTime = 0.8f;
     [SerializeField] float slideSpeed = 6f;
     public bool canSlide = true;
+    bool isSliding = false;
     float currentSlideTime;
 
     //speed
@@ -60,28 +62,20 @@ public class moving : MonoBehaviour
             SignAttack();
         }
 
-        if (Input.GetMouseButton(1) && canDash)
+        if (Input.GetMouseButton(1) && canDash && !isDashing)
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                StartCoroutine(Dash(Vector2.left));
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                StartCoroutine(Dash(Vector2.right));
-            }
+           // if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+           // {
+                StartCoroutine(Dash(Input.GetKey(KeyCode.A) ? Vector2.left : Vector2.right));
+           // }
         }
 
-        if(Input.GetKeyDown(KeyCode.C) && canSlide)
+        if (Input.GetKeyDown(KeyCode.C) && canSlide)
         {
-           if (Input.GetKey(KeyCode.A))
-            {
-                StartCoroutine(Slide(Vector2.left));
-            }
-           else if (Input.GetKey(KeyCode.D))
-            {
-                StartCoroutine(Slide(Vector2.right));
-            }
+           //if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            //{
+                StartCoroutine(Slide(Input.GetKey(KeyCode.A) ? Vector2.left : Vector2.right));
+           // }
         }
 
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -204,30 +198,32 @@ public class moving : MonoBehaviour
     }
     IEnumerator Dash(Vector2 direction)
     {
+       // if (isDashing) yield break; // If already dashing, exit the coroutine.
+
+        isDashing = true;
         canDash = false;
         animator.SetBool("Dash", true);
 
-        currentDashTime = startDashTime; // Reset the dash timer.
-        
+        currentDashTime = startDashTime;
+
         while (currentDashTime > 0f)
         {
-            
-            currentDashTime -= Time.deltaTime; // Lower the dash timer each frame.
+            currentDashTime -= Time.deltaTime;
 
-            rb.velocity = direction * dashSpeed; // Dash in the direction that was held down.
-                                                 // No need to multiply by Time.DeltaTime here, physics are already consistent across different FPS.
+            rb.velocity = direction * dashSpeed;
 
-            yield return null; // Returns out of the coroutine this frame so we don't hit an infinite loop.
+            yield return null;
         }
 
-        rb.velocity = new Vector2(0f, 0f); // Stop dashing.
-
+        rb.velocity = Vector2.zero;
         canDash = true;
+        isDashing = false;
         animator.SetBool("Dash", false);
     }
 
     IEnumerator Slide(Vector2 direction)
     {
+        isSliding = true;
         canSlide = false;
         animator.SetBool("isSliding", true);
 
@@ -239,8 +235,8 @@ public class moving : MonoBehaviour
             currentSlideTime -= Time.deltaTime; // Lower the slide timer each frame.
 
             rb.velocity = direction * slideSpeed; // Dash in the direction that was held down.
-                                                 // No need to multiply by Time.DeltaTime here, physics are already consistent across different FPS.
-
+                                                  // No need to multiply by Time.DeltaTime here, physics are already consistent across different FPS.
+           
             yield return null; // Returns out of the coroutine this frame so we don't hit an infinite loop.
         }
 
@@ -248,5 +244,6 @@ public class moving : MonoBehaviour
 
         canSlide = true;
         animator.SetBool("isSliding", false);
+        isSliding = false;
     }
 }
