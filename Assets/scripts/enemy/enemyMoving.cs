@@ -11,6 +11,7 @@ public class enemyMoving : MonoBehaviour
     private bool facingRight = false;
     private Vector3 localScale;
     private float horizontal;
+    Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class enemyMoving : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         dirX = -1f;
         moveSpeed = 3f;
-        
+        anim = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,22 +34,23 @@ public class enemyMoving : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        anim.SetBool("isWalking", true);
     }
 
     private void LateUpdate()
     {
-        //CheckWhereToFace();
+       CheckWhereToFace();
     }
 
     void CheckWhereToFace()
     {
         if (dirX > 0)
         {
-            facingRight = true;
+            facingRight = false;
         }
         else if (dirX < 0)
         {
-            facingRight= false;
+            facingRight= true;
         }
 
         if (((facingRight) && (localScale.x < 0f)) || (!facingRight) && (localScale.x > 0) )
