@@ -26,7 +26,7 @@ public class enemyHealth : MonoBehaviour
         //if health is less than 5 kill the enemy
         if (Health <= 1)
         {
-            anim.Play("Death");
+            anim.Play("Death-NoEffect");
             anim.SetBool("isWalking", false);
             StartCoroutine(died());
             Debug.Log(Health);
@@ -42,7 +42,7 @@ public class enemyHealth : MonoBehaviour
 
     IEnumerator died()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
     }
 }
